@@ -1,0 +1,264 @@
+<!-- pages/file-system.html -->
+<h1>Node.js File System Module</h1>
+
+<div class="text-section">
+    <h2>Node.js File System Module</h2>
+    <p>The Node.js file system module allows you to work with the file system on your computer.</p>
+    <p>To include the File System module, use the <code>require()</code> method:</p>
+    <div class="code-block">
+var fs = require('fs');
+    </div>
+</div>
+
+<div class="example-box">
+    <h2>Common System methods:</h2>
+    <ul class="method-list">
+        <li><code>fs.appendFile()</code> - Append content to a file</li>
+        <li><code>fs.open()</code> - Open a file</li>
+        <li><code>fs.writeFile()</code> - Write to a file</li>
+        <li><code>fs.readFile()</code> - Read a file</li>
+        <li><code>fs.unlink()</code> - Delete a file</li>
+        <li><code>fs.rename()</code> - Rename a file</li>
+    </ul>
+</div>
+
+<div class="example-box">
+    <h2>Create Files</h2>
+    <p>The File System module has methods for creating new files:</p>
+    
+    <h3>1. fs.appendFile()</h3>
+    <p>The <code>fs.appendFile()</code> method appends specified content to a file. If the file does not exist, the file will be created:</p>
+    <div class="code-block">
+var fs = require('fs');
+
+fs.appendFile('mynewfile1.txt', 'Hello content!', function (err) {
+    if (err) throw err;
+    console.log('Saved!');
+});
+    </div>
+    <a href="https://www.w3schools.com/nodejs/shownodejs.asp?filename=demo_module" target="_blank">
+        <button class="try-it-btn">Try it Yourself</button>
+    </a>
+
+    <h3>2. fs.open()</h3>
+    <p>The <code>fs.open()</code> method takes a "flag" as the second argument, if the flag is "w" for "writing", the specified file is opened for writing. If the file does not exist, an empty file is created:</p>
+    <div class="code-block">
+var fs = require('fs');
+
+fs.open('mynewfile2.txt', 'w', function (err, file) {
+    if (err) throw err;
+    console.log('Saved!');
+});
+    </div>
+    <a href="https://www.w3schools.com/nodejs/shownodejs.asp?filename=demo_module" target="_blank">
+        <button class="try-it-btn">Try it Yourself</button>
+    </a>
+
+    <h3>3. fs.writeFile()</h3>
+    <p>The <code>fs.writeFile()</code> method replaces the specified file and content if it exists. If the file does not exist, a new file, containing the specified content, will be created:</p>
+    <div class="code-block">
+var fs = require('fs');
+
+fs.writeFile('mynewfile3.txt', 'Hello content!', function (err) {
+    if (err) throw err;
+    console.log('Saved!');
+});
+    </div>
+    <a href="https://www.w3schools.com/nodejs/shownodejs.asp?filename=demo_module" target="_blank">
+        <button class="try-it-btn">Try it Yourself</button>
+    </a>
+</div>
+
+<div class="example-box">
+    <h2>Update Files</h2>
+    <p>There are two methods available for updating files:</p>
+    
+    <h3>1. fs.appendFile()</h3>
+    <p>Append content at the end of the file:</p>
+    <div class="code-block">
+var fs = require('fs');
+
+fs.appendFile('mynewfile1.txt', ' This is my text.', function (err) {
+    if (err) throw err;
+    console.log('Updated!');
+});
+    </div>
+    <a href="https://www.w3schools.com/nodejs/shownodejs.asp?filename=demo_module" target="_blank">
+        <button class="try-it-btn">Try it Yourself</button>
+    </a>
+
+    <h3>2. fs.writeFile()</h3>
+    <p>Replace the content of the file:</p>
+    <div class="code-block">
+var fs = require('fs');
+
+fs.writeFile('mynewfile3.txt', 'This is my text', function (err) {
+    if (err) throw err;
+    console.log('Replaced!');
+});
+    </div>
+    <a href="https://www.w3schools.com/nodejs/shownodejs.asp?filename=demo_module" target="_blank">
+        <button class="try-it-btn">Try it Yourself</button>
+    </a>
+</div>
+
+<div class="example-box">
+    <h2>Delete Files</h2>
+    <p>To delete a file with the File System module, use the <code>fs.unlink()</code> method:</p>
+    <div class="code-block">
+var fs = require('fs');
+
+fs.unlink('mynewfile2.txt', function (err) {
+    if (err) throw err;
+    console.log('File deleted!');
+});
+    </div>
+    <a href="https://www.w3schools.com/nodejs/shownodejs.asp?filename=demo_module" target="_blank">
+        <button class="try-it-btn">Try it Yourself</button>
+    </a>
+</div>
+
+<div class="example-box">
+    <h2>Rename Files</h2>
+    <p>To rename a file with the File System module, use the <code>fs.rename()</code> method:</p>
+    <div class="code-block">
+var fs = require('fs');
+
+fs.rename('mynewfile1.txt', 'myrenamedfile.txt', function (err) {
+    if (err) throw err;
+    console.log('File Renamed!');
+});
+    </div>
+    <a href="https://www.w3schools.com/nodejs/shownodejs.asp?filename=demo_module" target="_blank">
+        <button class="try-it-btn">Try it Yourself</button>
+    </a>
+</div>
+
+<div class="warning-box">
+    <h3>File System Operations are Asynchronous</h3>
+    <p>All methods in the fs module are asynchronous by default. To use synchronous versions (blocking), append "Sync" to the method name:</p>
+    <div class="code-block">
+// Asynchronous read
+fs.readFile('demofile.txt', 'utf8', function(err, data) {
+    if (err) throw err;
+    console.log(data);
+});
+
+// Synchronous read
+var data = fs.readFileSync('demofile.txt', 'utf8');
+console.log(data);
+    </div>
+</div>
+
+<style>
+    .text-section {
+        background-color: #ffffff;
+        padding: 1.5rem;
+        margin: 1.5rem 0;
+        border-radius: 4px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+
+    .example-box {
+        background-color: #E7E9EB;
+        padding: 1.5rem;
+        border-radius: 4px;
+        margin: 1.5rem 0;
+    }
+
+    .warning-box {
+        background-color: #FFECEC;
+        padding: 1.5rem;
+        border-radius: 4px;
+        margin: 1.5rem 0;
+        border-left: 4px solid #FF5252;
+    }
+
+    .code-block {
+        background-color: #1E1E1E;
+        color: #D4D4D4;
+        padding: 1rem;
+        border-radius: 4px;
+        margin: 1rem 0;
+        font-family: 'Consolas', 'Monaco', monospace;
+        overflow-x: auto;
+    }
+
+    .method-list {
+        list-style-type: none;
+        padding: 0;
+        margin: 1rem 0;
+    }
+
+    .method-list li {
+        margin: 0.5rem 0;
+        padding-left: 1.5rem;
+        position: relative;
+    }
+
+    .method-list li::before {
+        content: "•";
+        position: absolute;
+        left: 0;
+        color: #04AA6D;
+    }
+
+    code {
+        background-color: #FFF4A3;
+        padding: 0.2rem 0.4rem;
+        border-radius: 4px;
+        font-family: 'Consolas', 'Monaco', monospace;
+    }
+
+    h1, h2, h3 {
+        color: #282A35;
+        margin-bottom: 1rem;
+    }
+
+    h3 {
+        margin-top: 1.5rem;
+    }
+
+    p {
+        line-height: 1.6;
+        margin-bottom: 1rem;
+    }
+
+    .try-it-btn {
+        background-color: #04AA6D;
+        color: white;
+        border: none;
+        padding: 0.8rem 1.5rem;
+        border-radius: 25px;
+        cursor: pointer;
+        font-size: 1rem;
+        margin-top: 1rem;
+        transition: background-color 0.3s;
+    }
+
+    .try-it-btn:hover {
+        background-color: #059862;
+    }
+
+    /* Syntax highlighting */
+    .code-block .keyword {
+        color: #569CD6;
+    }
+    
+    .code-block .string {
+        color: #CE9178;
+    }
+    
+    .code-block .function {
+        color: #DCDCAA;
+    }
+
+    /* Note box styling */
+    .note-box {
+        background-color: #FFF4A3;
+        padding: 1rem;
+        border-radius: 4px;
+        margin: 1rem 0;
+        border-left: 4px solid #FFD700;
+    }
+</style>

@@ -1,0 +1,342 @@
+<!-- pages/upload.html -->
+<h1>Node.js Upload Files</h1>
+
+<div class="text-section">
+    <h2>Upload Files</h2>
+    <p>The Formidable module can be used to parse HTML forms with file uploads.</p>
+    <p>To include the Formidable module, use the <code>require()</code> method:</p>
+    <div class="code-block">
+var formidable = require('formidable');
+    </div>
+</div>
+
+<div class="example-box">
+    <h2>Step 1: Create an Upload Form</h2>
+    <p>Create a Node.js file that writes an HTML form with an upload field:</p>
+    <div class="code-block">
+var http = require('http');
+
+http.createServer(function (req, res) {
+    res.writeHead(200, {'Content-Type': 'text/html'});
+    res.write('<form action="fileupload" method="post" enctype="multipart/form-data">');
+    res.write('<input type="file" name="filetoupload"><br>');
+    res.write('<input type="submit">');
+    res.write('</form>');
+    return res.end();
+}).listen(8080);
+    </div>
+    <a href="https://www.w3schools.com/nodejs/shownodejs.asp?filename=demo_module" target="_blank">
+            <button class="try-it-btn">Try it Yourself</button>
+    </a>
+</div>
+
+<div class="example-box">
+    <h2>Step 2: Parse the Uploaded File</h2>
+    <p>Include the Formidable module to parse the uploaded file once it reaches the server.</p>
+    <p>When the file is uploaded and parsed, it gets placed on a temporary folder on your computer.</p>
+    <div class="code-block">
+var http = require('http');
+var formidable = require('formidable');
+
+http.createServer(function (req, res) {
+    if (req.url == '/fileupload') {
+        var form = new formidable.IncomingForm();
+        form.parse(req, function (err, fields, files) {
+            res.write('File uploaded');
+            res.end();
+        });
+    } else {
+        res.writeHead(200, {'Content-Type': 'text/html'});
+        res.write('<form action="fileupload" method="post" enctype="multipart/form-data">');
+        res.write('<input type="file" name="filetoupload"><br>');
+        res.write('<input type="submit">');
+        res.write('</form>');
+        return res.end();
+    }
+}).listen(8080);
+    </div>
+    <a href="https://www.w3schools.com/nodejs/shownodejs.asp?filename=demo_module" target="_blank">
+            <button class="try-it-btn">Try it Yourself</button>
+    </a>
+</div>
+
+<div class="example-box">
+    <h2>Step 3: Save the File</h2>
+    <p>When the file is successfully uploaded to the temporary folder, we can move it to the folder of your choice.</p>
+    <div class="code-block">
+var http = require('http');
+var formidable = require('formidable');
+var fs = require('fs');
+
+http.createServer(function (req, res) {
+    if (req.url == '/fileupload') {
+        var form = new formidable.IncomingForm();
+        form.parse(req, function (err, fields, files) {
+            var oldpath = files.filetoupload.filepath;
+            var newpath = 'C:/Users/Your Name/' + files.filetoupload.originalFilename;
+            fs.rename(oldpath, newpath, function (err) {
+                if (err) throw err;
+                res.write('File uploaded and moved!');
+                res.end();
+            });
+        });
+    } else {
+        res.writeHead(200, {'Content-Type': 'text/html'});
+        res.write('<form action="fileupload" method="post" enctype="multipart/form-data">');
+        res.write('<input type="file" name="filetoupload"><br>');
+        res.write('<input type="submit">');
+        res.write('</form>');
+        return res.end();
+    }
+}).listen(8080);
+    </div>
+    <a href="https://www.w3schools.com/nodejs/shownodejs.asp?filename=demo_module" target="_blank">
+            <button class="try-it-btn">Try it Yourself</button>
+    </a>
+</div>
+
+<div class="example-box">
+    <h2>Complete Upload Example with Error Handling</h2>
+    <div class="code-block">
+const http = require('http');
+const formidable = require('formidable');
+const fs = require('fs');
+const path = require('path');
+
+http.createServer(function (req, res) {
+    if (req.url == '/fileupload') {
+        // Create an instance of the form object
+        const form = new formidable.IncomingForm();
+        
+        // Parse the form
+        form.parse(req, function (err, fields, files) {
+            if (err) {
+                res.writeHead(500, {'Content-Type': 'text/html'});
+                res.write('Error parsing form');
+                return res.end();
+            }
+
+            const file = files.filetoupload;
+            if (!file) {
+                res.writeHead(400, {'Content-Type': 'text/html'});
+                res.write('No file uploaded');
+                return res.end();
+            }
+
+            // Create uploads directory if it doesn't exist
+            const uploadDir = 'uploads';
+            if (!fs.existsSync(uploadDir)) {
+                fs.mkdirSync(uploadDir);
+            }
+
+            const oldpath = file.filepath;
+            const newpath = path.join(uploadDir, file.originalFilename);
+
+            // Move the file
+            fs.rename(oldpath, newpath, function (err) {
+                if (err) {
+                    res.writeHead(500, {'Content-Type': 'text/html'});
+                    res.write('Error moving file');
+                    return res.end();
+                }
+                
+                res.writeHead(200, {'Content-Type': 'text/html'});
+                res.write('File uploaded and moved successfully!');
+                res.write('<br><a href="/">Upload another file</a>');
+                return res.end();
+            });
+        });
+    } else {
+        // Display upload form
+        res.writeHead(200, {'Content-Type': 'text/html'});
+        res.write('<h2>File Upload</h2>');
+        res.write('<form action="fileupload" method="post" enctype="multipart/form-data">');
+        res.write('<input type="file" name="filetoupload" required><br><br>');
+        res.write('<input type="submit" value="Upload File">');
+        res.write('</form>');
+        return res.end();
+    }
+}).listen(8080);
+
+console.log('Server running on port 8080');
+    </div>
+    <a href="https://www.w3schools.com/nodejs/shownodejs.asp?filename=demo_module" target="_blank">
+            <button class="try-it-btn">Try it Yourself</button>
+    </a>
+</div>
+
+<div class="warning-box">
+    <h2>Important Notes</h2>
+    <ul>
+        <li>Always validate file types before uploading</li>
+        <li>Limit file size to prevent server overload</li>
+        <li>Handle file name collisions</li>
+        <li>Set proper file permissions</li>
+        <li>Consider using a CDN or cloud storage for production</li>
+    </ul>
+</div>
+
+<div class="example-box">
+    <h2>File Upload with Validation</h2>
+    <div class="code-block">
+const http = require('http');
+const formidable = require('formidable');
+const fs = require('fs');
+const path = require('path');
+
+// Allowed file types
+const allowedTypes = ['image/jpeg', 'image/png', 'image/gif'];
+// Max file size (5MB)
+const maxSize = 5 * 1024 * 1024;
+
+http.createServer(function (req, res) {
+    if (req.url == '/fileupload') {
+        const form = new formidable.IncomingForm();
+        
+        form.parse(req, function (err, fields, files) {
+            if (err) {
+                return handleError(res, 'Error parsing form');
+            }
+
+            const file = files.filetoupload;
+            if (!file) {
+                return handleError(res, 'No file uploaded');
+            }
+
+            // Check file type
+            if (!allowedTypes.includes(file.mimetype)) {
+                return handleError(res, 'Invalid file type');
+            }
+
+            // Check file size
+            if (file.size > maxSize) {
+                return handleError(res, 'File too large');
+            }
+
+            // Handle file upload
+            const uploadDir = 'uploads';
+            if (!fs.existsSync(uploadDir)) {
+                fs.mkdirSync(uploadDir);
+            }
+
+            const oldpath = file.filepath;
+            const newpath = path.join(uploadDir, file.originalFilename);
+
+            fs.rename(oldpath, newpath, function (err) {
+                if (err) {
+                    return handleError(res, 'Error moving file');
+                }
+                
+                showSuccess(res);
+            });
+        });
+    } else {
+        showUploadForm(res);
+    }
+}).listen(8080);
+
+function handleError(res, message) {
+    res.writeHead(400, {'Content-Type': 'text/html'});
+    res.write(`Error: ${message}`);
+    res.write('<br><a href="/">Try again</a>');
+    return res.end();
+}
+
+function showSuccess(res) {
+    res.writeHead(200, {'Content-Type': 'text/html'});
+    res.write('File uploaded successfully!');
+    res.write('<br><a href="/">Upload another file</a>');
+    return res.end();
+}
+
+function showUploadForm(res) {
+    res.writeHead(200, {'Content-Type': 'text/html'});
+    res.write('<h2>File Upload</h2>');
+    res.write(`<p>Allowed types: ${allowedTypes.join(', ')}</p>`);
+    res.write(`<p>Max size: ${maxSize/1024/1024}MB</p>`);
+    res.write('<form action="fileupload" method="post" enctype="multipart/form-data">');
+    res.write('<input type="file" name="filetoupload" required><br><br>');
+    res.write('<input type="submit" value="Upload File">');
+    res.write('</form>');
+    return res.end();
+}
+    </div>
+</div>
+
+<style>
+    .text-section {
+        background-color: #ffffff;
+        padding: 1.5rem;
+        margin: 1.5rem 0;
+        border-radius: 4px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+
+    .example-box {
+        background-color: #E7E9EB;
+        padding: 1.5rem;
+        border-radius: 4px;
+        margin: 1.5rem 0;
+    }
+
+    .warning-box {
+        background-color: #FFECEC;
+        padding: 1.5rem;
+        border-radius: 4px;
+        margin: 1.5rem 0;
+        border-left: 4px solid #FF5252;
+    }
+
+    .code-block {
+        background-color: #1E1E1E;
+        color: #D4D4D4;
+        padding: 1rem;
+        border-radius: 4px;
+        margin: 1rem 0;
+        font-family: 'Consolas', 'Monaco', monospace;
+        overflow-x: auto;
+    }
+
+    code {
+        background-color: #FFF4A3;
+        padding: 0.2rem 0.4rem;
+        border-radius: 4px;
+        font-family: 'Consolas', 'Monaco', monospace;
+    }
+
+    h1, h2, h3 {
+        color: #282A35;
+        margin-bottom: 1rem;
+    }
+
+    p {
+        line-height: 1.6;
+        margin-bottom: 1rem;
+    }
+
+    ul {
+        margin-left: 1.5rem;
+        margin-bottom: 1rem;
+    }
+
+    li {
+        margin-bottom: 0.5rem;
+        line-height: 1.5;
+    }
+
+    .try-it-btn {
+        background-color: #04AA6D;
+        color: white;
+        border: none;
+        padding: 0.8rem 1.5rem;
+        border-radius: 25px;
+        cursor: pointer;
+        font-size: 1rem;
+        margin-top: 1rem;
+        transition: background-color 0.3s;
+    }
+
+    .try-it-btn:hover {
+        background-color: #059862;
+    }
+</style>

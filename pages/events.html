@@ -1,0 +1,278 @@
+<!-- pages/events.html -->
+<h1>Node.js Events</h1>
+
+<div class="text-section">
+    <h2>Node.js Events</h2>
+    <p>Every action on a computer is an event. Like when a connection is made or a file is opened.</p>
+    <p>Objects in Node.js can fire events, like the readStream object fires events when opening and closing a file:</p>
+    <div class="code-block">
+var fs = require('fs');
+var rs = fs.createReadStream('./demofile.txt');
+rs.on('open', function () {
+    console.log('The file is open');
+});
+    </div>
+</div>
+
+<div class="example-box">
+    <h2>Events Module</h2>
+    <p>Node.js has a built-in module, called "Events", where you can create-, fire-, and listen for- your own events.</p>
+    <p>To include the built-in Events module use the <code>require()</code> method. In addition, all event properties and methods are an instance of an EventEmitter object. To be able to access these properties and methods, create an EventEmitter object:</p>
+    <div class="code-block">
+var events = require('events');
+var eventEmitter = new events.EventEmitter();
+    </div>
+</div>
+
+<div class="example-box">
+    <h2>The EventEmitter Object</h2>
+    <p>You can assign event handlers to your own events with the EventEmitter object.</p>
+    <p>In the example below we create a function that will be executed when a "scream" event is fired.</p>
+    <p>To fire an event, use the <code>emit()</code> method.</p>
+    <div class="code-block">
+var events = require('events');
+var eventEmitter = new events.EventEmitter();
+
+//Create an event handler:
+var myEventHandler = function () {
+    console.log('I hear a scream!');
+}
+
+//Assign the event handler to an event:
+eventEmitter.on('scream', myEventHandler);
+
+//Fire the 'scream' event:
+eventEmitter.emit('scream');
+    </div>
+    <a href="https://www.w3schools.com/nodejs/shownodejs.asp?filename=demo_module" target="_blank">
+                <button class="try-it-btn">Try it Yourself</button>
+            </a>
+</div>
+
+<div class="example-box">
+    <h2>Multiple Event Listeners</h2>
+    <p>You can add multiple event listeners to the same event:</p>
+    <div class="code-block">
+var events = require('events');
+var eventEmitter = new events.EventEmitter();
+
+//First Event Handler
+eventEmitter.on('start', function() {
+    console.log('First listener');
+});
+
+//Second Event Handler
+eventEmitter.on('start', function() {
+    console.log('Second listener');
+});
+
+eventEmitter.emit('start');
+// Output:
+// First listener
+// Second listener
+    </div>
+    <a href="https://www.w3schools.com/nodejs/shownodejs.asp?filename=demo_module" target="_blank">
+                <button class="try-it-btn">Try it Yourself</button>
+            </a>
+</div>
+
+<div class="example-box">
+    <h2>Events with Parameters</h2>
+    <p>You can pass arguments to the event handler:</p>
+    <div class="code-block">
+var events = require('events');
+var eventEmitter = new events.EventEmitter();
+
+eventEmitter.on('message', function(data) {
+    console.log('Received message:', data);
+});
+
+eventEmitter.emit('message', 'Hello World');
+// Output: Received message: Hello World
+    </div>
+    <a href="https://www.w3schools.com/nodejs/shownodejs.asp?filename=demo_module" target="_blank">
+                <button class="try-it-btn">Try it Yourself</button>
+            </a>
+</div>
+
+<div class="example-box">
+    <h2>Common Event Methods</h2>
+    <table class="events-table">
+        <tr>
+            <th>Method</th>
+            <th>Description</th>
+        </tr>
+        <tr>
+            <td><code>addListener(event, listener)</code></td>
+            <td>Adds a listener at the end of the listeners array</td>
+        </tr>
+        <tr>
+            <td><code>on(event, listener)</code></td>
+            <td>Adds a listener at the end of the listeners array</td>
+        </tr>
+        <tr>
+            <td><code>once(event, listener)</code></td>
+            <td>Adds a one-time listener</td>
+        </tr>
+        <tr>
+            <td><code>removeListener(event, listener)</code></td>
+            <td>Removes a listener from the listener array</td>
+        </tr>
+        <tr>
+            <td><code>removeAllListeners([event])</code></td>
+            <td>Removes all listeners, or those of the specified event</td>
+        </tr>
+        <tr>
+            <td><code>emit(event, [arg1], [arg2], [...])</code></td>
+            <td>Raise the specified event</td>
+        </tr>
+    </table>
+</div>
+
+<div class="example-box">
+    <h2>Once Event</h2>
+    <p>The <code>once()</code> method adds a one-time listener that will be removed after it is called:</p>
+    <div class="code-block">
+var events = require('events');
+var eventEmitter = new events.EventEmitter();
+
+eventEmitter.once('onceEvent', function() {
+    console.log('This will be displayed only once');
+});
+
+eventEmitter.emit('onceEvent'); // Displays message
+eventEmitter.emit('onceEvent'); // Does nothing
+    </div>
+    <a href="https://www.w3schools.com/nodejs/shownodejs.asp?filename=demo_module" target="_blank">
+                <button class="try-it-btn">Try it Yourself</button>
+            </a>
+</div>
+
+<div class="warning-box">
+    <h2>Error Events</h2>
+    <p>The EventEmitter calls all listeners synchronously in the order in which they were registered. This ensures the proper sequencing of events and helps avoid race conditions and logic errors.</p>
+    <p>When an error occurs within an EventEmitter instance, the typical action is to emit an 'error' event. Error events are treated as a special case in Node.js.</p>
+    <div class="code-block">
+const eventEmitter = new events.EventEmitter();
+
+eventEmitter.on('error', (err) => {
+    console.error('There was an error:', err);
+});
+
+eventEmitter.emit('error', new Error('Something bad happened'));
+    </div>
+</div>
+
+<style>
+    .text-section {
+        background-color: #ffffff;
+        padding: 1.5rem;
+        margin: 1.5rem 0;
+        border-radius: 4px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+
+    .example-box {
+        background-color: #E7E9EB;
+        padding: 1.5rem;
+        border-radius: 4px;
+        margin: 1.5rem 0;
+    }
+
+    .warning-box {
+        background-color: #FFECEC;
+        padding: 1.5rem;
+        border-radius: 4px;
+        margin: 1.5rem 0;
+        border-left: 4px solid #FF5252;
+    }
+
+    .code-block {
+        background-color: #1E1E1E;
+        color: #D4D4D4;
+        padding: 1rem;
+        border-radius: 4px;
+        margin: 1rem 0;
+        font-family: 'Consolas', 'Monaco', monospace;
+        overflow-x: auto;
+    }
+
+    .events-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 1rem 0;
+        background-color: white;
+    }
+
+    .events-table th,
+    .events-table td {
+        padding: 0.8rem;
+        text-align: left;
+        border: 1px solid #ddd;
+    }
+
+    .events-table th {
+        background-color: #04AA6D;
+        color: white;
+    }
+
+    .events-table tr:nth-child(even) {
+        background-color: #f9f9f9;
+    }
+
+    .events-table tr:hover {
+        background-color: #f5f5f5;
+    }
+
+    code {
+        background-color: #FFF4A3;
+        padding: 0.2rem 0.4rem;
+        border-radius: 4px;
+        font-family: 'Consolas', 'Monaco', monospace;
+    }
+
+    h1, h2, h3 {
+        color: #282A35;
+        margin-bottom: 1rem;
+    }
+
+    p {
+        line-height: 1.6;
+        margin-bottom: 1rem;
+    }
+
+    .try-it-btn {
+        background-color: #04AA6D;
+        color: white;
+        border: none;
+        padding: 0.8rem 1.5rem;
+        border-radius: 25px;
+        cursor: pointer;
+        font-size: 1rem;
+        margin-top: 1rem;
+        transition: background-color 0.3s;
+    }
+
+    .try-it-btn:hover {
+        background-color: #059862;
+    }
+
+    /* Output styling */
+    .output {
+        background-color: #f4f4f4;
+        padding: 1rem;
+        border-radius: 4px;
+        margin: 1rem 0;
+        font-family: 'Consolas', 'Monaco', monospace;
+    }
+
+    /* Comments in code */
+    .code-block .comment {
+        color: #6A9955;
+    }
+
+    /* Strings in code */
+    .code-block .string {
+        color: #CE9178;
+    }
+</style>

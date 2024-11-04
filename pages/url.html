@@ -1,0 +1,283 @@
+<!-- pages/url.html -->
+<h1>Node.js URL Module</h1>
+
+<div class="text-section">
+    <h2>The Built-in URL Module</h2>
+    <p>The URL module splits up a web address into readable parts.</p>
+    <p>To include the URL module, use the <code>require()</code> method:</p>
+    <div class="code-block">
+var url = require('url');
+    </div>
+</div>
+
+<div class="example-box">
+    <h2>Parse an address with the url.parse() method</h2>
+    <p>Split a web address into readable parts:</p>
+    <div class="code-block">
+var url = require('url');
+var adr = 'http://localhost:8080/default.htm?year=2017&month=february';
+var q = url.parse(adr, true);
+
+console.log(q.host);     //returns 'localhost:8080'
+console.log(q.pathname); //returns '/default.htm'
+console.log(q.search);   //returns '?year=2017&month=february'
+
+var qdata = q.query;     //returns an object: { year: 2017, month: 'february' }
+console.log(qdata.month); //returns 'february'
+    </div>
+    <a href="https://www.w3schools.com/nodejs/shownodejs.asp?filename=demo_module" target="_blank">
+        <button class="try-it-btn">Try it Yourself</button>
+    </a>
+</div>
+
+<div class="example-box">
+    <h2>Node.js File Server</h2>
+    <p>Create a Node.js file that opens the requested file and returns the content to the client. If anything goes wrong, throw a 404 error:</p>
+    <div class="code-block">
+var http = require('http');
+var url = require('url');
+var fs = require('fs');
+
+http.createServer(function (req, res) {
+    var q = url.parse(req.url, true);
+    var filename = "." + q.pathname;
+    fs.readFile(filename, function(err, data) {
+        if (err) {
+            res.writeHead(404, {'Content-Type': 'text/html'});
+            return res.end("404 Not Found");
+        } 
+        res.writeHead(200, {'Content-Type': 'text/html'});
+        res.write(data);
+        return res.end();
+    });
+}).listen(8080);
+    </div>
+    <a href="https://www.w3schools.com/nodejs/shownodejs.asp?filename=demo_module" target="_blank">
+        <button class="try-it-btn">Try it Yourself</button>
+    </a>
+</div>
+
+<div class="example-box">
+    <h2>Demo Files for the Web Server</h2>
+    <p>Create two HTML files and save them in the same folder as your Node.js file:</p>
+    
+    <h3>summer.html</h3>
+    <div class="code-block">
+<!DOCTYPE html>
+<html>
+<body>
+    <h1>Summer</h1>
+    <p>I love the sun!</p>
+</body>
+</html>
+    </div>
+
+    <h3>winter.html</h3>
+    <div class="code-block">
+<!DOCTYPE html>
+<html>
+<body>
+    <h1>Winter</h1>
+    <p>I love the snow!</p>
+</body>
+</html>
+    </div>
+</div>
+
+<div class="example-box">
+    <h2>The URL Module Properties</h2>
+    <table class="properties-table">
+        <tr>
+            <th>Property</th>
+            <th>Description</th>
+        </tr>
+        <tr>
+            <td><code>auth</code></td>
+            <td>Returns the auth part of the URL, including username and password</td>
+        </tr>
+        <tr>
+            <td><code>hash</code></td>
+            <td>Returns the hash part of the URL</td>
+        </tr>
+        <tr>
+            <td><code>host</code></td>
+            <td>Returns the hostname and port of the URL</td>
+        </tr>
+        <tr>
+            <td><code>hostname</code></td>
+            <td>Returns the hostname of the URL</td>
+        </tr>
+        <tr>
+            <td><code>href</code></td>
+            <td>Returns the complete URL</td>
+        </tr>
+        <tr>
+            <td><code>path</code></td>
+            <td>Returns the path part of the URL</td>
+        </tr>
+        <tr>
+            <td><code>pathname</code></td>
+            <td>Returns the path name of the URL</td>
+        </tr>
+        <tr>
+            <td><code>port</code></td>
+            <td>Returns the port number of the URL</td>
+        </tr>
+        <tr>
+            <td><code>protocol</code></td>
+            <td>Returns the protocol of the URL</td>
+        </tr>
+        <tr>
+            <td><code>query</code></td>
+            <td>Returns the query part of the URL</td>
+        </tr>
+        <tr>
+            <td><code>search</code></td>
+            <td>Returns the search part of the URL</td>
+        </tr>
+    </table>
+</div>
+
+<div class="example-box">
+    <h2>Complete URL Example</h2>
+    <p>Let's analyze a complete URL:</p>
+    <div class="url-example">
+        <code>https://user:pass@host.com:8080/path/to/file?query=string#hash</code>
+    </div>
+    <div class="code-block">
+var url = require('url');
+var adr = 'https://user:pass@host.com:8080/path/to/file?query=string#hash';
+var q = url.parse(adr, true);
+
+console.log('Protocol: ' + q.protocol);  // https:
+console.log('Auth: ' + q.auth);         // user:pass
+console.log('Host: ' + q.host);         // host.com:8080
+console.log('Path: ' + q.path);         // /path/to/file?query=string
+console.log('Hash: ' + q.hash);         // #hash
+    </div>
+    <a href="https://www.w3schools.com/nodejs/shownodejs.asp?filename=demo_module" target="_blank">
+        <button class="try-it-btn">Try it Yourself</button>
+    </a>
+</div>
+
+<style>
+    .text-section {
+        background-color: #ffffff;
+        padding: 1.5rem;
+        margin: 1.5rem 0;
+        border-radius: 4px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+
+    .example-box {
+        background-color: #E7E9EB;
+        padding: 1.5rem;
+        border-radius: 4px;
+        margin: 1.5rem 0;
+    }
+
+    .code-block {
+        background-color: #1E1E1E;
+        color: #D4D4D4;
+        padding: 1rem;
+        border-radius: 4px;
+        margin: 1rem 0;
+        font-family: 'Consolas', 'Monaco', monospace;
+        overflow-x: auto;
+    }
+
+    .properties-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 1rem 0;
+        background-color: white;
+    }
+
+    .properties-table th,
+    .properties-table td {
+        padding: 0.8rem;
+        text-align: left;
+        border: 1px solid #ddd;
+    }
+
+    .properties-table th {
+        background-color: #04AA6D;
+        color: white;
+    }
+
+    .properties-table tr:nth-child(even) {
+        background-color: #f9f9f9;
+    }
+
+    .properties-table tr:hover {
+        background-color: #f5f5f5;
+    }
+
+    .url-example {
+        background-color: #fff;
+        padding: 1rem;
+        border-radius: 4px;
+        margin: 1rem 0;
+        border: 1px solid #ddd;
+        overflow-x: auto;
+    }
+
+    code {
+        background-color: #FFF4A3;
+        padding: 0.2rem 0.4rem;
+        border-radius: 4px;
+        font-family: 'Consolas', 'Monaco', monospace;
+    }
+
+    h1, h2, h3 {
+        color: #282A35;
+        margin-bottom: 1rem;
+    }
+
+    h3 {
+        margin-top: 1.5rem;
+    }
+
+    p {
+        line-height: 1.6;
+        margin-bottom: 1rem;
+    }
+
+    .try-it-btn {
+        background-color: #04AA6D;
+        color: white;
+        border: none;
+        padding: 0.8rem 1.5rem;
+        border-radius: 25px;
+        cursor: pointer;
+        font-size: 1rem;
+        margin-top: 1rem;
+        transition: background-color 0.3s;
+    }
+
+    .try-it-btn:hover {
+        background-color: #059862;
+    }
+
+    /* Note box styling */
+    .note-box {
+        background-color: #FFF4A3;
+        padding: 1rem;
+        border-radius: 4px;
+        margin: 1rem 0;
+        border-left: 4px solid #FFD700;
+    }
+
+    /* Syntax highlighting */
+    .code-block .comment {
+        color: #6A9955;
+    }
+    
+    .code-block .string {
+        color: #CE9178;
+    }
+    
+    .code-block .function {
+        color: #DCDCAA;
+    }
+</style>

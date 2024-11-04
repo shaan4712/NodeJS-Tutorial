@@ -1,0 +1,283 @@
+<!-- pages/email.html -->
+<h1>Node.js Send Email</h1>
+
+<div class="text-section">
+    <h2>Send an Email</h2>
+    <p>The Nodemailer Module makes it easy to send emails from your computer.</p>
+    <p>To install Nodemailer module use Node Package Manager:</p>
+    <div class="command-block">
+npm install nodemailer
+    </div>
+</div>
+
+<div class="example-box">
+    <h2>Step 1: Include Nodemailer Module</h2>
+    <p>After installation, you can include the module in your application:</p>
+    <div class="code-block">
+var nodemailer = require('nodemailer');
+    </div>
+</div>
+
+<div class="example-box">
+    <h2>Step 2: Create Transport Object</h2>
+    <p>Create a transporter object using your email service credentials:</p>
+    <div class="code-block">
+var transporter = nodemailer.createTransport({
+    service: 'gmail',
+    auth: {
+        user: 'youremail@gmail.com',
+        pass: 'yourpassword'
+    }
+});
+    </div>
+    <div class="note-box">
+        <p>Note: From May 30, 2022, Google no longer supports the use of third-party apps or devices which ask you to sign in to your Google Account using only your username and password.</p>
+        <p>To use your Gmail account, you need to either:</p>
+        <ul>
+            <li>Use OAuth 2.0 authentication</li>
+            <li>Enable 2-Step Verification and create an App Password</li>
+        </ul>
+    </div>
+</div>
+
+<div class="example-box">
+    <h2>Step 3: Create Mail Options</h2>
+    <p>Define the email content:</p>
+    <div class="code-block">
+var mailOptions = {
+    from: 'youremail@gmail.com',
+    to: 'recipient@example.com',
+    subject: 'Sending Email using Node.js',
+    text: 'That was easy!'
+};
+    </div>
+</div>
+
+<div class="example-box">
+    <h2>Step 4: Send Email</h2>
+    <p>Send the email using the <code>sendMail()</code> method:</p>
+    <div class="code-block">
+transporter.sendMail(mailOptions, function(error, info){
+    if (error) {
+        console.log(error);
+    } else {
+        console.log('Email sent: ' + info.response);
+    }
+});
+    </div>
+</div>
+
+<div class="example-box">
+    <h2>Complete Example</h2>
+    <div class="code-block">
+const nodemailer = require('nodemailer');
+
+// Create transporter object
+const transporter = nodemailer.createTransport({
+    service: 'gmail',
+    auth: {
+        user: 'youremail@gmail.com',
+        pass: 'your-app-password'
+    }
+});
+
+// Email options
+const mailOptions = {
+    from: 'youremail@gmail.com',
+    to: 'recipient@example.com',
+    subject: 'Test Email from Node.js',
+    text: 'This is a test email from Node.js'
+};
+
+// Send email
+transporter.sendMail(mailOptions, function(error, info){
+    if (error) {
+        console.log(error);
+    } else {
+        console.log('Email sent: ' + info.response);
+    }
+});
+    </div>
+    <a href="https://www.w3schools.com/nodejs/shownodejs.asp?filename=demo_module" target="_blank">
+        <button class="try-it-btn">Try it Yourself</button>
+    </a>
+</div>
+
+<div class="example-box">
+    <h2>Sending HTML Email</h2>
+    <p>To send HTML formatted text in your email, use the "html" property instead of the "text" property:</p>
+    <div class="code-block">
+var mailOptions = {
+    from: 'youremail@gmail.com',
+    to: 'recipient@example.com',
+    subject: 'HTML Email using Node.js',
+    html: '<h1>Welcome</h1><p>That was easy!</p>'
+};
+    </div>
+    <a href="https://www.w3schools.com/nodejs/shownodejs.asp?filename=demo_module" target="_blank">
+        <button class="try-it-btn">Try it Yourself</button>
+    </a>
+</div>
+
+<div class="example-box">
+    <h2>Sending Email with Attachments</h2>
+    <div class="code-block">
+var mailOptions = {
+    from: 'youremail@gmail.com',
+    to: 'recipient@example.com',
+    subject: 'Email with attachment',
+    text: 'Please find the attachment',
+    attachments: [
+        {
+            filename: 'text.txt',
+            content: 'Hello world!'
+        },
+        {
+            filename: 'image.png',
+            path: '/path/to/image.png'
+        }
+    ]
+};
+    </div>
+    <a href="https://www.w3schools.com/nodejs/shownodejs.asp?filename=demo_module" target="_blank">
+        <button class="try-it-btn">Try it Yourself</button>
+    </a>
+</div>
+
+<div class="example-box">
+    <h2>Using Other Email Services</h2>
+    <p>You can use other email services. Here's an example with Outlook:</p>
+    <div class="code-block">
+var transporter = nodemailer.createTransport({
+    host: "smtp-mail.outlook.com",
+    port: 587,
+    secure: false, // true for 465, false for other ports
+    auth: {
+        user: 'youremail@outlook.com',
+        pass: 'yourpassword'
+    }
+});
+    </div>
+</div>
+
+<div class="warning-box">
+    <h2>Security Considerations</h2>
+    <ul>
+        <li>Never store email credentials in your code</li>
+        <li>Use environment variables for sensitive information</li>
+        <li>Always use secure SMTP connections</li>
+        <li>Be careful with email attachments</li>
+        <li>Implement rate limiting for email sending</li>
+    </ul>
+</div>
+
+<div class="example-box">
+    <h2>Using Environment Variables</h2>
+    <p>Better way to handle credentials using environment variables:</p>
+    <div class="code-block">
+require('dotenv').config();
+
+const transporter = nodemailer.createTransport({
+    service: 'gmail',
+    auth: {
+        user: process.env.EMAIL_USER,
+        pass: process.env.EMAIL_PASS
+    }
+});
+    </div>
+</div>
+
+<style>
+    .text-section {
+        background-color: #ffffff;
+        padding: 1.5rem;
+        margin: 1.5rem 0;
+        border-radius: 4px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+
+    .example-box {
+        background-color: #E7E9EB;
+        padding: 1.5rem;
+        border-radius: 4px;
+        margin: 1.5rem 0;
+    }
+
+    .warning-box {
+        background-color: #FFECEC;
+        padding: 1.5rem;
+        border-radius: 4px;
+        margin: 1.5rem 0;
+        border-left: 4px solid #FF5252;
+    }
+
+    .note-box {
+        background-color: #FFF4A3;
+        padding: 1rem;
+        border-radius: 4px;
+        margin: 1rem 0;
+        border-left: 4px solid #FFD700;
+    }
+
+    .command-block {
+        background-color: #1E1E1E;
+        color: #D4D4D4;
+        padding: 1rem;
+        border-radius: 4px;
+        margin: 1rem 0;
+        font-family: 'Consolas', 'Monaco', monospace;
+    }
+
+    .code-block {
+        background-color: #1E1E1E;
+        color: #D4D4D4;
+        padding: 1rem;
+        border-radius: 4px;
+        margin: 1rem 0;
+        font-family: 'Consolas', 'Monaco', monospace;
+        overflow-x: auto;
+    }
+
+    code {
+        background-color: #FFF4A3;
+        padding: 0.2rem 0.4rem;
+        border-radius: 4px;
+        font-family: 'Consolas', 'Monaco', monospace;
+    }
+
+    h1, h2, h3 {
+        color: #282A35;
+        margin-bottom: 1rem;
+    }
+
+    p {
+        line-height: 1.6;
+        margin-bottom: 1rem;
+    }
+
+    ul {
+        margin-left: 1.5rem;
+        margin-bottom: 1rem;
+    }
+
+    li {
+        margin-bottom: 0.5rem;
+        line-height: 1.5;
+    }
+
+    .try-it-btn {
+        background-color: #04AA6D;
+        color: white;
+        border: none;
+        padding: 0.8rem 1.5rem;
+        border-radius: 25px;
+        cursor: pointer;
+        font-size: 1rem;
+        margin-top: 1rem;
+        transition: background-color 0.3s;
+    }
+
+    .try-it-btn:hover {
+        background-color: #059862;
+    }
+</style>

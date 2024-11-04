@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NodeJS Tutorial</title>
+    <link rel="stylesheet" href="styles.css">
+    <script>
+        async function loadContent(page) {
+            try {
+                const response = await fetch(`pages/${page}.html`);
+                const content = await response.text();
+                document.getElementById('main-content').innerHTML = content;
+                history.pushState(null, '', `#${page}`);
+                document.querySelectorAll('.menu-item').forEach(item => {
+                    item.classList.remove('active');
+                });
+                document.querySelector(`[data-page="${page}"]`).classList.add('active');
+            } catch (error) {
+                console.error('Error loading content:', error);
+            }
+        }
+
+        window.onload = () => {
+            const page = window.location.hash.slice(1) || 'intro';
+            loadContent(page);
+        }
+    </script>
+</head>
+<body>
+    <div class="header">
+        <div class="logo">
+            <a href="index.html">NodeJS Tutorial</a>
+        </div>
+        
+        <nav class="main-nav">
+            <a href="index.html" class="active">Home</a>
+            <a href="#tutorials">Tutorials</a>
+            <a href="#references">References</a>
+        </nav>
+
+        <div class="nav-right">
+            <a href="https://www.w3schools.com/nodejs/shownodejs.asp?filename=demo_module" target="_blank">
+                <button class="try-it-btn">Try it Yourself</button>
+            </a>
+        </div>
+    </div>
+
+    <div class="main-container">
+        <div class="sidebar">
+            <a href="#" class="menu-item" data-page="intro" onclick="loadContent('intro')">NodeJS Introduction</a>
+            <a href="#" class="menu-item" data-page="get-started" onclick="loadContent('get-started')">Get Started</a>
+            <a href="#" class="menu-item" data-page="modules" onclick="loadContent('modules')">Modules</a>
+            <a href="#" class="menu-item" data-page="http" onclick="loadContent('http')">HTTP Module</a>
+            <a href="#" class="menu-item" data-page="file-system" onclick="loadContent('file-system')">File System</a>
+            <a href="#" class="menu-item" data-page="url" onclick="loadContent('url')">URL Module</a>
+            <a href="#" class="menu-item" data-page="npm" onclick="loadContent('npm')">NPM</a>
+            <a href="#" class="menu-item" data-page="events" onclick="loadContent('events')">Events</a>
+            <a href="#" class="menu-item" data-page="upload" onclick="loadContent('upload')">Upload Files</a>
+            <a href="#" class="menu-item" data-page="email" onclick="loadContent('email')">Send Email</a>
+        </div>
+
+        <div class="content" id="main-content">
+            <!-- Content will be loaded here dynamically -->
+        </div>
+    </div>
+</body>
+</html>

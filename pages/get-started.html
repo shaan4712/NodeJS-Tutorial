@@ -1,0 +1,200 @@
+<!-- pages/get-started.html -->
+<h1>Node.js Get Started</h1>
+
+<div class="text-section">
+    <h2>Download Node.js</h2>
+    <p>Download Node.js from the official Node.js web site: <a href="https://nodejs.org" target="_blank">https://nodejs.org</a></p>
+</div>
+
+<div class="example-box">
+    <h2>Getting Started</h2>
+    <p>Once you have downloaded and installed Node.js on your computer, let's try to display "Hello World" in a web browser.</p>
+</div>
+
+<div class="text-section">
+    <h2>Create a Node.js file</h2>
+    <ol>
+        <li>Create a folder named "myproject"</li>
+        <li>Navigate to "myproject" in your command line</li>
+        <li>Create a file named "myfirstmodule.js"</li>
+        <li>Create a file named "myfirst.js"</li>
+    </ol>
+</div>
+
+<div class="example-box">
+    <h2>Step 1: Create a Node.js file</h2>
+    <p>Create a file named "myfirst.js", and add the following code:</p>
+    <div class="code-block">
+var http = require('http');
+
+http.createServer(function (req, res) {
+    res.writeHead(200, {'Content-Type': 'text/html'});
+    res.end('Hello World!');
+}).listen(8080);
+    </div>
+    <p>Save the file on your computer: C:\Users\Your Name\myfirst.js</p>
+</div>
+
+<div class="example-box">
+    <h2>Step 2: Initiate the Node.js File</h2>
+    <p>The file you created must be initiated by Node.js before any action can take place.</p>
+    <p>Start your command line interface, write <code>node myfirst.js</code> and hit enter:</p>
+    <div class="code-block">
+C:\Users\Your Name>cd C:\Users\Your Name\myproject
+C:\Users\Your Name\myproject>node myfirst.js
+    </div>
+</div>
+
+<div class="example-box">
+    <h2>Step 3: View Result in Browser</h2>
+    <p>Now, your computer works as a server!</p>
+    <p>If anyone tries to access your computer on port 8080, they will receive the "Hello World!" message.</p>
+    <p>Start your internet browser, and type in the address: <code>http://localhost:8080</code></p>
+</div>
+
+<div class="text-section">
+    <h2>Node.js Modules</h2>
+    <p>What is a Module in Node.js?</p>
+    <p>Consider modules to be the same as JavaScript libraries.</p>
+    <p>A set of functions you want to include in your application.</p>
+</div>
+
+<div class="example-box">
+    <h2>Built-in Modules</h2>
+    <p>Node.js has a set of built-in modules which you can use without any further installation.</p>
+    <p>Look at our <a href="#" onclick="loadContent('modules')">Built-in Modules Reference</a> for a complete list of modules.</p>
+</div>
+
+<div class="example-box">
+    <h2>Include Modules</h2>
+    <p>To include a module, use the <code>require()</code> function with the name of the module:</p>
+    <div class="code-block">
+var http = require('http');
+    </div>
+    <p>Now your application has access to the HTTP module, and is able to create a server:</p>
+    <div class="code-block">
+http.createServer(function (req, res) {
+    res.writeHead(200, {'Content-Type': 'text/html'});
+    res.end('Hello World!');
+}).listen(8080);
+    </div>
+</div>
+
+<div class="example-box">
+    <h2>Create Your Own Modules</h2>
+    <p>You can create your own modules, and easily include them in your applications.</p>
+    <p>Create a module that returns the current date and time:</p>
+    <div class="code-block">
+// myfirstmodule.js
+exports.myDateTime = function () {
+    return Date();
+};
+    </div>
+    
+    <p>Use the module in your Node.js file:</p>
+    <div class="code-block">
+// demo_module.js
+var http = require('http');
+var dt = require('./myfirstmodule');
+
+http.createServer(function (req, res) {
+    res.writeHead(200, {'Content-Type': 'text/html'});
+    res.write("The date and time are currently: " + dt.myDateTime());
+    res.end();
+}).listen(8080);
+    </div>
+    <a href="https://www.w3schools.com/nodejs/shownodejs.asp?filename=demo_module" target="_blank">
+        <button class="try-it-btn">Try it Yourself</button>
+    </a>
+</div>
+
+<div class="notice-box">
+    <h2>Note</h2>
+    <p>Use <code>.js</code> when saving the file, and <code>node filename.js</code> when running the file from the command line.</p>
+</div>
+
+<style>
+    .text-section {
+        background-color: #ffffff;
+        padding: 1.5rem;
+        margin: 1.5rem 0;
+        border-radius: 4px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+
+    .example-box {
+        background-color: #E7E9EB;
+        padding: 1.5rem;
+        border-radius: 4px;
+        margin: 1.5rem 0;
+    }
+
+    .notice-box {
+        background-color: #FFF4A3;
+        padding: 1.5rem;
+        border-radius: 4px;
+        margin: 1.5rem 0;
+    }
+
+    .code-block {
+        background-color: #1E1E1E;
+        color: #D4D4D4;
+        padding: 1rem;
+        border-radius: 4px;
+        margin: 1rem 0;
+        font-family: 'Consolas', 'Monaco', monospace;
+        overflow-x: auto;
+    }
+
+    code {
+        background-color: #FFF4A3;
+        padding: 0.2rem 0.4rem;
+        border-radius: 4px;
+        font-family: 'Consolas', 'Monaco', monospace;
+    }
+
+    h1, h2 {
+        color: #282A35;
+        margin-bottom: 1rem;
+    }
+
+    p {
+        line-height: 1.6;
+        margin-bottom: 1rem;
+    }
+
+    ol, ul {
+        padding-left: 2rem;
+        margin: 1rem 0;
+    }
+
+    li {
+        margin: 0.5rem 0;
+        line-height: 1.5;
+    }
+
+    a {
+        color: #04AA6D;
+        text-decoration: none;
+    }
+
+    a:hover {
+        text-decoration: underline;
+    }
+
+    .try-it-btn {
+        background-color: #04AA6D;
+        color: white;
+        border: none;
+        padding: 0.8rem 1.5rem;
+        border-radius: 25px;
+        cursor: pointer;
+        font-size: 1rem;
+        margin-top: 1rem;
+        transition: background-color 0.3s;
+    }
+
+    .try-it-btn:hover {
+        background-color: #059862;
+    }
+</style>
